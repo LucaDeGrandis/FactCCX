@@ -2,9 +2,9 @@
 # Evaluate FactCC model
 
 # UPDATE PATHS BEFORE RUNNING SCRIPT
-export CODE_PATH=/u/scr/yuhuiz/develop/Factual-Summarization/scorer/entailscore/factCC/modeling # absolute path to modeling directory
-export DATA_PATH=/u/scr/yuhuiz/develop/Factual-Summarization/scorer/entailscore/factCC/pregenerated_data/generated_data/data-pointers # absolute path to data directory
-export CKPT_PATH=/u/scr/yuhuiz/develop/Factual-Summarization/scorer/entailscore/factCC/pretrained_models/factcc-checkpoint # absolute path to model checkpoint
+export CODE_PATH=/content/FactCCX/modeling # absolute path to modeling directory
+export DATA_PATH=/content/temp_data # absolute path to data directory
+export CKPT_PATH=/content/factcc-checkpoint.tar.gz # absolute path to model checkpoint
 
 export TASK_NAME=factcc_annotated
 export MODEL_NAME=bert-base-uncased
