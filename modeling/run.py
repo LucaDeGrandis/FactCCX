@@ -277,7 +277,13 @@ def evaluate(args, model, tokenizer, prefix=""):
             writer.write("%s = %s\n" % (key, str(result[key])))
     preds = preds.tolist()
     confs = confs.tolist()
-    
+    output_preds_file = os.path.join(eval_output_dir, "predictions.txt")
+    with open(output_preds_file, "w") as writer:
+        writer.write(' '.join(list(map(str,preds))))
+    output_confs_file = os.path.join(eval_output_dir, "confidences.txt")
+    with open(output_confs_file, "w") as writer:
+        writer.write(' '.join(list(map(str,confs))))
+
     # ---------------------------------------------------------------------------
     # fout = open(args.data_dir + '/output.txt', 'w')
     # for pred, conf, span, raw_text in zip(preds, confs, spans, raw_texts):
@@ -290,7 +296,7 @@ def evaluate(args, model, tokenizer, prefix=""):
     #     # fout.write('-'*63+'\n')
     # # ---------------------------------------------------------------------------
 
-    return results
+    return results, preds
 
 
 def load_and_cache_examples(args, task, tokenizer, evaluate=False):
@@ -532,7 +538,7 @@ def main():
             global_step = checkpoint.split('-')[-1] if len(checkpoints) > 1 else ""
             model = model_class.from_pretrained(checkpoint)
             model.to(args.device)
-            result = evaluate(args, model, tokenizer, prefix=global_step)
+            result, predictions = evaluate(args, model, tokenizer, prefix=global_step)
             result = dict((k + '_{}'.format(global_step), v) for k, v in result.items())
             results.update(result)
 
