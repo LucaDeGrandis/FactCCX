@@ -30,6 +30,32 @@ import scipy
 from model import BertPointer
 from utils import (compute_metrics, convert_examples_to_features, output_modes, processors)
 
+
+import json
+from typing import List
+def write_jsonl_file(
+    filepath: str,
+    input_list: List,
+    mode: str = 'a+',
+    overwrite: bool = False
+) -> None:
+    """Write a list into a jsonl
+    *arguments*
+    *filepath* path to save the file into
+    *input_list* list to be saved in the json file, must be made of json iterable objects
+    *overwrite* whether to force overwriting a file.
+        When set to False you will append the new items to an existing jsonl file (if the file already exists).
+    """
+    if overwrite:
+        try:
+            os.remove(filepath)
+        except:
+            pass
+    with open(filepath, mode, encoding='utf8') as writer:
+        for line in input_list:
+            writer.write(json.dumps(line) + '\n')
+
+
 from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler, TensorDataset)
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
@@ -545,4 +571,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    results = main()
+    write_jsonl_file('/content/results.jsonl', [results], overwrite=True)
+
