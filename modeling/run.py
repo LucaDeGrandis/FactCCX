@@ -23,7 +23,6 @@ import logging
 import os
 import random
 
-import wandb
 import numpy as np
 import torch
 import scipy
@@ -39,7 +38,7 @@ from pytorch_transformers import (WEIGHTS_NAME, BertConfig, BertForSequenceClass
 from pytorch_transformers import AdamW, WarmupLinearSchedule
 
 logger = logging.getLogger(__name__)
-wandb.init(project="entailment-metric")
+# wandb.init(project="entailment-metric")
 
 ALL_MODELS = sum((tuple(conf.pretrained_config_archive_map.keys()) for conf in (BertConfig,)), ())
 
@@ -171,11 +170,11 @@ def train(args, train_dataset, model, tokenizer):
                     result = compute_metrics(args.task_name, preds, out_label_ids)
                     results.update(result)
 
-                    for key, value in results.items():
-                        wandb.log({'train_{}'.format(key): value})
+                    # for key, value in results.items():
+                    #     wandb.log({'train_{}'.format(key): value})
 
-                    wandb.log({"train_loss": (tr_loss - logging_loss) / args.logging_steps})
-                    wandb.log({"train_lr": scheduler.get_lr()[0]})
+                    # wandb.log({"train_loss": (tr_loss - logging_loss) / args.logging_steps})
+                    # wandb.log({"train_lr": scheduler.get_lr()[0]})
                     logging_loss = tr_loss
 
             if args.max_steps > 0 and global_step > args.max_steps:
@@ -185,8 +184,8 @@ def train(args, train_dataset, model, tokenizer):
         if args.evaluate_during_training:
             # Only evaluate when single GPU otherwise metrics may not average well
             results = evaluate(args, model, tokenizer)
-            for key, value in results.items():
-                wandb.log({'eval_{}'.format(key): value})
+            # for key, value in results.items():
+            #     wandb.log({'eval_{}'.format(key): value})
 
         if args.local_rank in [-1, 0]:
             # Save model checkpoint
