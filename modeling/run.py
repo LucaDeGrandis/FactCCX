@@ -279,10 +279,10 @@ def evaluate(args, model, tokenizer, prefix=""):
     confs = confs.tolist()
     output_preds_file = os.path.join(eval_output_dir, "predictions.txt")
     with open(output_preds_file, "w") as writer:
-        writer.write(' '.join(list(map(str,preds))))
+        writer.write('\n'.join(list(map(str,preds))))
     output_confs_file = os.path.join(eval_output_dir, "confidences.txt")
     with open(output_confs_file, "w") as writer:
-        writer.write(' '.join(list(map(str,confs))))
+        writer.write('\n'.join(list(map(str,confs))))
 
     # ---------------------------------------------------------------------------
     # fout = open(args.data_dir + '/output.txt', 'w')
